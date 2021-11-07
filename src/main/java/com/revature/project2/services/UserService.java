@@ -41,6 +41,16 @@ public class UserService {
 		}
 	}
 	
+	public User getUser(int id) {
+	
+		try {
+			return uDao.findById(id);
+		}catch (Exception e) {
+			return null;
+		}
+		
+	}
+	
 	
 	
 }

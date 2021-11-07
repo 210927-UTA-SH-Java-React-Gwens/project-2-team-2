@@ -9,5 +9,7 @@ import com.revature.project2.models.User;
 public interface UserRepo extends JpaRepository <User, Integer> {
 	
 	public User findByUsername (String username);
+	
+	public User findById (int id);
 
 }
