@@ -1,5 +1,6 @@
 package com.revature.project2.models;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -43,6 +44,9 @@ public class Listing {
 	
 	@Column(name="content")
 	private String content;
+	
+	@Column(name = "posted")
+	private Date posted;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "purchaser_id")
