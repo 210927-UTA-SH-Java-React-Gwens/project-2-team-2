@@ -31,17 +31,23 @@ public class UserController {
 		return uServ.getAllUsers();
 	}
 	
-	@PostMapping("/")
+	@PostMapping("/create-user")
 	public User createUser(@RequestBody User u) {
 		System.out.println(u);
 		return uServ.createUser(u);
 	}
 	
 	@CrossOrigin(origins = "*")
-	@GetMapping("/u")
+	@GetMapping("/get-user")
 	public User getUser(@RequestParam("id") int id) {
 		System.out.println(id);
 		return uServ.getUser(id);
+	}
+	
+	@PostMapping("/login")
+	public User login(@RequestBody User u) {
+		System.out.println(u);
+		return uServ.login(u);
 	}
 	
 }

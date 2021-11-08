@@ -51,6 +51,21 @@ public class UserService {
 		
 	}
 	
+	public User login(User user) {
+		
+		try {
+			User userDB = uDao.findByUsername(user.getUsername());
+			if(userDB.getPassword().equals(user.getPassword()))
+				return userDB;
+			else
+				return null;
+			
+		}catch (Exception e) {
+			return null;
+		}
+		
+	}
+	
 	
 	
 }
