@@ -7,10 +7,5 @@ pipeline {
                 sh "mvn spring-boot:run"
             }
         }
-        stage("Deploy") {
-            steps {
-                sh "ls"
-            }
-        }
     }
 }
