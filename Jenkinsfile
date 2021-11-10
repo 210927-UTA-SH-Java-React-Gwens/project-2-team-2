@@ -1,16 +1,26 @@
 pipeline {
-     agent any
-     options {
+    agent any
+    options {
         skipDefaultCheckout(true)
     }
-     stages {
-        stage("Build") {
+    stages {
+        stage('Build') {
             steps {
-                sh "cleanWs()"
-                sh "checkout scm" 
+                cleanWs()
+                checkout scm
                 sh "mvn clean install"
                 sh "mvn spring-boot:run"
             }
+        }
+    }
+    post {
+        always {
+            cleanWs(cleanWhenNotBuilt: false,
+                    deleteDirs: true,
+                    disableDeferredWipeout: true,
+                    notFailBuild: true,
+                    patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+                               [pattern: '.propsfile', type: 'EXCLUDE']])
         }
     }
 }
