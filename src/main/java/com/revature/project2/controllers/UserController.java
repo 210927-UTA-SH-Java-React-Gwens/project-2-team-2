@@ -62,4 +62,16 @@ public class UserController {
 		return uServ.updateUserEmail(u);
 	}
 	
+	@PostMapping("/update-password")
+	public User updatePassword(@RequestBody User u) {
+		System.out.println(u);
+		return uServ.updateUserPassword(u);
+	}
+	
+	@PostMapping("/add-funds")
+	public User addFunds(@RequestBody User u) {
+		System.out.println(u);
+		return uServ.addFunds(u);
+	}
+	
 }

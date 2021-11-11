@@ -92,6 +92,32 @@ public class UserService {
 		return userDB;
 	}
 	
+	public User updateUserPassword(User user) {
+		User userDB = null;
+		try {
+			userDB = uDao.findById(user.getId());
+			userDB.setPassword(user.getPassword());
+			uDao.save(userDB);
+		}catch(Exception e) {
+			return null;
+		}
+		
+		return userDB;
+	}
+	
+	public User addFunds(User user) {
+		User userDB = null;
+		try {
+			userDB = uDao.findById(user.getId());
+			userDB.setFunds(user.getFunds() + userDB.getFunds());
+			uDao.save(userDB);
+		}catch(Exception e) {
+			return null;
+		}
+		
+		return userDB;
+	}
+	
 	
 	
 }
