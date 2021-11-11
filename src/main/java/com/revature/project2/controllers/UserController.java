@@ -50,4 +50,16 @@ public class UserController {
 		return uServ.login(u);
 	}
 	
+	@PostMapping("/update-username")
+	public User updateUsername(@RequestBody User u) {
+		System.out.println(u);
+		return uServ.updateUserUsername(u);
+	}
+	
+	@PostMapping("/update-email")
+	public User updateEmail(@RequestBody User u) {
+		System.out.println(u);
+		return uServ.updateUserEmail(u);
+	}
+	
 }

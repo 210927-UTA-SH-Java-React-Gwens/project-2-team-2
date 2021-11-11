@@ -66,6 +66,32 @@ public class UserService {
 		
 	}
 	
+	public User updateUserUsername(User user) {
+		User userDB = null;
+		try {
+			userDB = uDao.findById(user.getId());
+			userDB.setUsername(user.getUsername());
+			uDao.save(userDB);
+		}catch(Exception e) {
+			return null;
+		}
+		
+		return userDB;
+	}
+	
+	public User updateUserEmail(User user) {
+		User userDB = null;
+		try {
+			userDB = uDao.findById(user.getId());
+			userDB.setEmail(user.getEmail());
+			uDao.save(userDB);
+		}catch(Exception e) {
+			return null;
+		}
+		
+		return userDB;
+	}
+	
 	
 	
 }
