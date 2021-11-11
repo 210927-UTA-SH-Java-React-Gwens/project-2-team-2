@@ -1,5 +1,6 @@
 package com.revature.project2.models;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.web.multipart.MultipartFile;
+
 @Entity
 @Table(name="listing_images")
 public class ListingImage {
@@ -24,8 +27,8 @@ public class ListingImage {
 	@Column(name = "img", nullable = false)
 	private byte[] img;
 	
-	@Column(name = "filetype", nullable = false)
-	private String type;
+	@Column(name = "index", nullable = false)
+	private int index;
 	
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -38,13 +41,18 @@ public class ListingImage {
 	}
 
 
-	public ListingImage(byte[] img, String type, Listing listing) {
+	public ListingImage(byte[] img, Listing listing) {
 		super();
 		this.img = img;
-		this.type = type;
 		this.listing = listing;
 	}
-
+	
+	public ListingImage(Listing listing, int index, MultipartFile file) throws IOException {
+		super();
+		this.listing = listing;
+		this.index = index;
+		this.img = file.getBytes();
+	}
 
 	public byte[] getImg() {
 		return img;
@@ -53,16 +61,6 @@ public class ListingImage {
 
 	public void setImg(byte[] img) {
 		this.img = img;
-	}
-
-
-	public String getType() {
-		return type;
-	}
-
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 
@@ -78,7 +76,7 @@ public class ListingImage {
 	
 	@Override
 	public String toString() {
-		return "ListingImage [img=" + Arrays.toString(img) + ", type=" + type + ", listing=" + listing + "]";
+		return "ListingImage [img=" + Arrays.toString(img) + ", index=" + index + ", listing=" + listing + "]";
 	}
 	
 }
