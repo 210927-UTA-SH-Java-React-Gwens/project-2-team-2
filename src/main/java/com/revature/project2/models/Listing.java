@@ -28,9 +28,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Listing {
 
 	@Id
-	@Column(name = "listing_id")
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int listingId;
+	private int id;
 
 	@Column(name = "price")
 	private int price;
@@ -64,36 +64,46 @@ public class Listing {
 	@Column(name = "category")
 	private String category;
 
+	
+	
 	public Listing() {
 		super();
 	}
 
-	public Listing(int listingId, int price, User poster, User purchaser, List<User> watchers,
-			List<ListingImage> images, String category) {
+	/**
+	 * All-args constructor
+	 * @param id
+	 * @param price
+	 * @param poster
+	 * @param title
+	 * @param content
+	 * @param posted
+	 * @param purchaser
+	 * @param watchers
+	 * @param images
+	 * @param category
+	 */
+	public Listing(int id, int price, User poster, String title, String content, Date posted, User purchaser,
+			List<User> watchers, List<ListingImage> images, String category) {
 		super();
-		this.listingId = listingId;
+		this.id = id;
 		this.price = price;
 		this.poster = poster;
+		this.title = title;
+		this.content = content;
+		this.posted = posted;
 		this.purchaser = purchaser;
 		this.watchers = watchers;
 		this.images = images;
 		this.category = category;
 	}
-
-	public Listing(int price, String title, String content, String category) {
-		super();
-		this.price = price;
-		this.title = title;
-		this.content = content;
-		this.category = category;
+	
+	public int getId() {
+		return id;
 	}
 
-	public int getListingId() {
-		return listingId;
-	}
-
-	public void setListingId(int listingId) {
-		this.listingId = listingId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getPrice() {
@@ -112,6 +122,30 @@ public class Listing {
 		this.poster = poster;
 	}
 
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Date getPosted() {
+		return posted;
+	}
+
+	public void setPosted(Date posted) {
+		this.posted = posted;
+	}
+
 	public User getPurchaser() {
 		return purchaser;
 	}
@@ -127,24 +161,38 @@ public class Listing {
 	public void setWatchers(List<User> watchers) {
 		this.watchers = watchers;
 	}
-	
+
 	public List<ListingImage> getImages() {
-		return this.images;
+		return images;
 	}
-	
+
 	public void setImages(List<ListingImage> images) {
 		this.images = images;
 	}
-	
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	/**
+	 * @param image
+	 */
 	public void addImage(ListingImage image) {
 		this.images.add(image);
 	}
 
 	@Override
 	public String toString() {
-		return "Listing [listingId=" + listingId + ", price=" + price + ", poster=" + poster + ", title=" + title
+		return "Listing [id=" + id + ", price=" + price + ", poster=" + poster + ", title=" + title
 				+ ", content=" + content + ", posted=" + posted + ", purchaser=" + purchaser + ", watchers=" + watchers
 				+ ", images=" + images + ", category=" + category + "]";
 	}
 
+	
+	
+	
 }

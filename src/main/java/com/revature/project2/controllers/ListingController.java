@@ -1,26 +1,19 @@
 package com.revature.project2.controllers;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Base64;
-import java.util.LinkedHashMap;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,7 +37,7 @@ public class ListingController {
 	 * @param id
 	 * @return
 	 */
-	@GetMapping("")
+	@GetMapping(value = "")
 	public Listing getListingById(@RequestParam int id) {
 		return lServ.getListingById(id);
 	}
@@ -63,7 +56,7 @@ public class ListingController {
 	 *         code
 	 */
 	@PostMapping(value = "/new", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-	public ResponseEntity<Integer> createListing(
+	public Listing createListing(
 			@RequestParam String title,
 			@RequestParam String desc,
 			@RequestParam String category,
@@ -81,7 +74,7 @@ public class ListingController {
 			System.out.println("  " + file.getOriginalFilename());
 		System.out.println("-----------------------------");
 		
-		Listing listing = new Listing(price, title, desc, category);
+		Listing listing = new Listing(0, price, null, title, desc, new Date(), null, null, new ArrayList<ListingImage>(), category);
 		
 		ListingImage limg;
 		for (int i = 0; i < images.size(); i++) {
@@ -89,18 +82,10 @@ public class ListingController {
 				limg = new ListingImage(listing, i, images.get(i));
 				listing.addImage(limg);
 			} catch (IOException e) {
-				return new ResponseEntity<Integer>(-1, HttpStatus.INTERNAL_SERVER_ERROR);
+				return new Listing();
 			}
 		}
 		
-		listing = lServ.createListing(listing);
-
-		return new ResponseEntity<Integer>(listing.getListingId(), HttpStatus.OK);
-		/*
-		 * if (session.getAttribute("user") == null) return new
-		 * ResponseEntity<Listing>(new Listing(), HttpStatus.FORBIDDEN); return null;//
-		 * new ResponseEntity<Listing>(lServ.createListing(listing),
-		 * HttpStatus.CREATED);
-		 */
+		return lServ.createListing(listing);
 	}
 }
