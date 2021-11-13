@@ -16,4 +16,9 @@ public interface ListingRepo extends JpaRepository <Listing, Integer> {
 	public List<Listing> findByTitleContaining(String snipit);
 	
 	public List<Listing> findByContentContaining(String snipit);
+
+	public List<Listing> findFirst10ByOrderByIdDesc();
+	
+	
+
 }

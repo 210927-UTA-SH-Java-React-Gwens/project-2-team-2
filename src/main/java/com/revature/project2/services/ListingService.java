@@ -29,5 +29,7 @@ private ListingRepo lDao;
 	public List<Listing> getListingsByCategory(String category) {
 		return lDao.findByCategory(category);
 	}
+	
+	
 
 }
