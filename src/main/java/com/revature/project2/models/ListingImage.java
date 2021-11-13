@@ -16,6 +16,8 @@ import javax.persistence.Table;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="listing_images")
 public class ListingImage {
@@ -33,6 +35,7 @@ public class ListingImage {
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "listing_id")
+	@JsonIgnore
 	private Listing listing;
 
 
@@ -72,11 +75,35 @@ public class ListingImage {
 	public void setListing(Listing listing) {
 		this.listing = listing;
 	}
+	
+	
+
+	
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+	public int getIndex() {
+		return index;
+	}
+
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
 
 	
 	@Override
 	public String toString() {
-		return "ListingImage [img=" + Arrays.toString(img) + ", index=" + index + ", listing=" + listing + "]";
+		return "ListingImage [id=" + id + ", img=" + Arrays.toString(img) + ", index=" + index + ", listing=" + listing
+				+ "]";
 	}
 	
 }
