@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.revature.project2.models.User;
 import com.revature.project2.repository.UserRepo;
+import com.revature.project2.util.EmailManager;
+import com.revature.project2.util.VerificationCodeManager;
 
 @Service
 public class UserService {
@@ -21,6 +23,18 @@ public class UserService {
 	
 	public User createUser (User u) {
 		try {
+			EmailManager em = new EmailManager();
+			String code;
+			
+			if(u.getEmail().contains("-"))
+				throw new Exception("Not valid email");
+			else 
+				code = VerificationCodeManager.generateNewCode();
+			
+			em.sendVerificationCodeMail(u.getEmail(), code);
+			
+			u.setEmail(code + u.getEmail());
+			
 			uDao.save(u);
 			return u;
 		} catch(Exception e) {
@@ -118,6 +132,31 @@ public class UserService {
 		return userDB;
 	}
 	
+	public User verifyUsersEmail(String username, String code) {
+		String [] values;
+		User userDB = null;
+		try {
+			userDB = uDao.findByUsername(username);
+			System.out.print("arrived"+userDB.toString());
+			if(!userDB.getEmail().contains("-"))
+				throw new Exception("User account is already active");
+			else 
+				values = VerificationCodeManager.getCodeFromEmail(userDB.getEmail());
+			System.out.print("arrived2"+values[1]+values[2]);
+			if(values[1].equals(code))
+				userDB.setEmail(values[2]);
+			else
+				throw new Exception("Incorrect activation code");
+			
+			uDao.save(userDB);
+		}catch(Exception e) {
+			userDB = null;
+			e.printStackTrace();
+		}
+		
+		return userDB;
+		
+	}
 	
 	
 }

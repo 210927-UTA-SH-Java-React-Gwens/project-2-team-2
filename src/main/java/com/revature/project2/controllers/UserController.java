@@ -1,6 +1,7 @@
 package com.revature.project2.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.project2.models.User;
 import com.revature.project2.services.UserService;
+import com.revature.project2.util.VerificationCodeManager;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -72,6 +74,13 @@ public class UserController {
 	public User addFunds(@RequestBody User u) {
 		System.out.println(u);
 		return uServ.addFunds(u);
+	}
+	
+	@PostMapping("/verify")
+	public User emailMe(@RequestBody Map<String, String> json) {
+		//System.out.println(json.get("username"));
+		//System.out.println(json.get("code"));
+		return uServ.verifyUsersEmail(json.get("username"), json.get("code"));
 	}
 	
 }
