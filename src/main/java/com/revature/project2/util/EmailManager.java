@@ -24,7 +24,7 @@ public final class EmailManager {
 	static boolean testEnviroment = false;
 
 	
-	
+	// based of https://www.baeldung.com/java-email for mailtrap and from https://mkyong.com/java/javamail-api-sending-email-via-gmail-smtp-example/ for gmail implementation
 	public  boolean sendVerificationCodeMail(String destiny, String subject, String code) {
 		Properties prop;
 		boolean success = true;
@@ -64,7 +64,7 @@ public final class EmailManager {
 			}
 				
 				
-				
+
 				 try {
 					Message message = new MimeMessage(session);
 					message.setFrom(new InternetAddress("from@gmail.com"));
