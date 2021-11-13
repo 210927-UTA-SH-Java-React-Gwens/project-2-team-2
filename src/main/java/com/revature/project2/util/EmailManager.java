@@ -21,16 +21,17 @@ public final class EmailManager {
 	final static String senderEmailPassword = "gwenspassword";
 	final static String senderEmailTest = "ae6337e8de968c";
 	final static String senderEmailPasswordTest = "673b34b6e8dea5";
-	static boolean testEnviroment = false;
+	static boolean testEnviroment = true;
 
 	
 	// based of https://www.baeldung.com/java-email for mailtrap and from https://mkyong.com/java/javamail-api-sending-email-via-gmail-smtp-example/ for gmail implementation
-	public  boolean sendVerificationCodeMail(String destiny, String subject, String code) {
+	public  boolean sendVerificationCodeMail(String destiny, String code) {
 		Properties prop;
 		boolean success = true;
 		Session session = null;
 		String content = "Please copy the code and submit it on the provided input field after you log in";
 		String title = "Welcome to GWENsList!";
+		String subject = "Please verify your account";
 		String user;
 		String password;
 		String html = "<div style=\"background-color: #2B193D; text-align: center; border-radius: 1em;\" >"
