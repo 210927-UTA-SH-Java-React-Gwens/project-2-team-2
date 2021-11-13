@@ -8,7 +8,9 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,8 +40,9 @@ public class ListingController {
 	 * @return
 	 */
 	@GetMapping(value = "")
-	public Listing getListingById(@RequestParam int id) {
-		return lServ.getListingById(id);
+	public ResponseEntity<Listing> getListingById(@RequestParam int id) {
+		Listing l = lServ.getListingById(id);
+		return new ResponseEntity<Listing>(l, l == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
 	}
 
 	/**
