@@ -34,6 +34,17 @@ public class ListingController {
 	public ListingController(ListingService l) {
 		this.lServ = l;
 	}
+	
+	@GetMapping("/recent")
+	public ResponseEntity<List<Listing>> getRecentListings() {
+		List<Listing> recent = lServ.getRecentListings();
+		return new ResponseEntity<List<Listing>>(recent,
+				recent == null
+					? HttpStatus.INTERNAL_SERVER_ERROR
+					: recent.size() == 0
+						? HttpStatus.NO_CONTENT
+						: HttpStatus.OK);
+	}
 
 	/**
 	 * @param id

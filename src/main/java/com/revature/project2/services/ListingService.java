@@ -30,6 +30,7 @@ private ListingRepo lDao;
 		return lDao.findByCategory(category);
 	}
 	
-	
-
+	public List<Listing> getRecentListings() {
+		return lDao.findFirst10ByOrderByIdDesc();
+	}
 }
