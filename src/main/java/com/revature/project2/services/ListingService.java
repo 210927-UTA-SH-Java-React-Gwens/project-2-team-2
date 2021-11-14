@@ -1,5 +1,6 @@
 package com.revature.project2.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,4 +34,11 @@ private ListingRepo lDao;
 	public List<Listing> getRecentListings() {
 		return lDao.findFirst10ByOrderByIdDesc();
 	}
+	
+	public List<Listing> getListingsBySearchQuery(String query) {
+		List<Listing> fullSearch = new ArrayList<Listing>(lDao.findByTitleContaining(query));
+		fullSearch.addAll(lDao.findByContentContaining(query));
+		return fullSearch;
+	}
+	
 }
