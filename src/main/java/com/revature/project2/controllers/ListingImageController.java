@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.revature.project2.models.ListingImage;
 import com.revature.project2.services.ListingImageService;
@@ -48,6 +49,11 @@ public class ListingImageController {
 		return ResponseEntity.ok()
 				.contentType(MediaType.parseMediaType(li.getFtype()))
 				.body(li.getImg());
+	}
+	
+	@PostMapping(value = "/add", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+	public int addImage(@RequestParam int listing, @RequestParam MultipartFile image) {
+		return liServ.addImage(listing, image);
 	}
 	
 }

@@ -55,11 +55,16 @@ public class ListingImage {
 		this.ftype = ftype;
 	}
 	
-	public ListingImage(Listing listing, int index, MultipartFile file) throws IOException {
+	public ListingImage(Listing listing, int index, MultipartFile file) {
 		super();
 		this.listing = listing;
 		this.index = index;
-		this.img = file.getInputStream().readAllBytes();
+		try {
+			this.img = file.getInputStream().readAllBytes();
+		} catch (IOException e) {
+			e.printStackTrace();
+			this.img = new byte[0];
+		}
 		this.ftype = file.getContentType();
 	}
 
