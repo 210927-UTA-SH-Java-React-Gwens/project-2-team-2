@@ -60,7 +60,7 @@ public class ListingImage {
 		this.listing = listing;
 		this.index = index;
 		try {
-			this.img = file.getInputStream().readAllBytes();
+			this.img = file.getBytes();
 		} catch (IOException e) {
 			e.printStackTrace();
 			this.img = new byte[0];
