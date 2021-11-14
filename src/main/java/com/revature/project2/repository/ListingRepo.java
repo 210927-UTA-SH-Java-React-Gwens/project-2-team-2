@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.revature.project2.models.Listing;
+import com.revature.project2.models.User;
 
 @Repository
 public interface ListingRepo extends JpaRepository <Listing, Integer> {
@@ -19,6 +20,8 @@ public interface ListingRepo extends JpaRepository <Listing, Integer> {
 
 	public List<Listing> findFirst10ByOrderByIdDesc();
 	
+	public List<Listing> findByPoster(User poster);
 	
+	public List<Listing> findByPurchaser(User purchaser);
 
 }

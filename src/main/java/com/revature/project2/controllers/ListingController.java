@@ -3,7 +3,10 @@ package com.revature.project2.controllers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -48,25 +51,16 @@ public class ListingController {
 						: HttpStatus.OK);
 	}
 	
-	@GetMapping("/search={query}")
-	public @ResponseBody ResponseEntity<List<Listing>> getListingBySearchQuery(@PathVariable(value="query") String query) {
-		List<Listing> recent = lServ.getListingsBySearchQuery(query);
-		return new ResponseEntity<List<Listing>>(recent,
-				recent == null
-					? HttpStatus.INTERNAL_SERVER_ERROR
-					: recent.size() == 0
-						? HttpStatus.NO_CONTENT
-						: HttpStatus.OK);
-	}
-
-	/**
-	 * @param id
-	 * @return
-	 */
-	@GetMapping(value = "")
-	public ResponseEntity<Listing> getListingById(@RequestParam int id) {
-		Listing l = lServ.getListingById(id);
-		return new ResponseEntity<Listing>(l, l == null ? HttpStatus.NOT_FOUND : HttpStatus.OK);
+	@GetMapping(value="/search")
+	public ResponseEntity<List<Listing>> getListingsByPoster(
+			@RequestParam Optional<String> user,
+			@RequestParam Optional<String> purchaser,
+			@RequestParam Optional<String> query,
+			@RequestParam Optional<Integer> id) {
+		List<Listing> listings = lServ.getListingsBySearchParams(user, purchaser, query, id);
+		if (listings == null)
+			return new ResponseEntity<List<Listing>>(new ArrayList<Listing>(), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<List<Listing>>(listings, listings.size() == 0 ? HttpStatus.NO_CONTENT : HttpStatus.OK);
 	}
 
 	/**
