@@ -32,6 +32,9 @@ public class ListingImage {
 	@Column(name = "index", nullable = false)
 	private int index;
 	
+	@Column(name = "ftype", nullable = false)
+	private String ftype;
+	
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "listing_id")
@@ -44,39 +47,22 @@ public class ListingImage {
 	}
 
 
-	public ListingImage(byte[] img, Listing listing) {
+	public ListingImage(int id, byte[] img, int index, String ftype, Listing listing) {
 		super();
 		this.img = img;
 		this.listing = listing;
+		this.index = index;
+		this.ftype = ftype;
 	}
 	
 	public ListingImage(Listing listing, int index, MultipartFile file) throws IOException {
 		super();
 		this.listing = listing;
 		this.index = index;
-		this.img = file.getBytes();
+		this.img = file.getInputStream().readAllBytes();
+		this.ftype = file.getContentType();
 	}
 
-	public byte[] getImg() {
-		return img;
-	}
-
-
-	public void setImg(byte[] img) {
-		this.img = img;
-	}
-
-
-	public Listing getListing() {
-		return listing;
-	}
-
-	
-	public void setListing(Listing listing) {
-		this.listing = listing;
-	}
-	
-	
 
 	
 	public int getId() {
@@ -86,6 +72,16 @@ public class ListingImage {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+
+	public byte[] getImg() {
+		return img;
+	}
+
+
+	public void setImg(byte[] img) {
+		this.img = img;
 	}
 
 
@@ -99,11 +95,30 @@ public class ListingImage {
 	}
 
 
+	public String getFtype() {
+		return ftype;
+	}
+
+
+	public void setFtype(String ftype) {
+		this.ftype = ftype;
+	}
+
+
+	public Listing getListing() {
+		return listing;
+	}
+
+
+	public void setListing(Listing listing) {
+		this.listing = listing;
+	}
+
+
 	
 	@Override
 	public String toString() {
-		return "ListingImage [id=" + id + ", img=" + Arrays.toString(img) + ", index=" + index + ", listing=" + listing
-				+ "]";
+		return "ListingImage [id=" + id + ", img=" + Arrays.toString(img) + ", index=" + index + ", ftype=" + ftype
+				+ ", listing=" + listing + "]";
 	}
-	
 }

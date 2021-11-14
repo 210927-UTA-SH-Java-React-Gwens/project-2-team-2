@@ -13,9 +13,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,6 +35,28 @@ public class ListingController {
 	@Autowired
 	public ListingController(ListingService l) {
 		this.lServ = l;
+	}
+	
+	@GetMapping("/recent")
+	public ResponseEntity<List<Listing>> getRecentListings() {
+		List<Listing> recent = lServ.getRecentListings();
+		return new ResponseEntity<List<Listing>>(recent,
+				recent == null
+					? HttpStatus.INTERNAL_SERVER_ERROR
+					: recent.size() == 0
+						? HttpStatus.NO_CONTENT
+						: HttpStatus.OK);
+	}
+	
+	@GetMapping("/search={query}")
+	public @ResponseBody ResponseEntity<List<Listing>> getListingBySearchQuery(@PathVariable(value="query") String query) {
+		List<Listing> recent = lServ.getListingsBySearchQuery(query);
+		return new ResponseEntity<List<Listing>>(recent,
+				recent == null
+					? HttpStatus.INTERNAL_SERVER_ERROR
+					: recent.size() == 0
+						? HttpStatus.NO_CONTENT
+						: HttpStatus.OK);
 	}
 
 	/**
