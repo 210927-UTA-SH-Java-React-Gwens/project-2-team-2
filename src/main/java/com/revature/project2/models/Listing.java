@@ -35,7 +35,7 @@ public class Listing {
 	@Column(name = "price")
 	private int price;
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "poster_id")
 	private User poster;
 
@@ -48,7 +48,7 @@ public class Listing {
 	@Column(name = "posted")
 	private Date posted = new Date();
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "purchaser_id")
 	private User purchaser = null;
 
