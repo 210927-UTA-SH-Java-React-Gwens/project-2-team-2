@@ -28,11 +28,10 @@ public class MessageController {
 	}
 	
 	@GetMapping("/messages")
-	public List<Message> getListingMessages(@RequestParam int sender_id, int reciever_id){
+	public List<Message> getListingMessages(@RequestParam int sender_id, @RequestParam int reciever_id){
 		return mServ.getConversation(sender_id, reciever_id);
 	}
 	
-	@CrossOrigin(origins = "*")
 	@GetMapping("/recievers")
 	public List<User> getRecipients(@RequestParam("id") int user_id){
 		return mServ.getAllRecievers(user_id);

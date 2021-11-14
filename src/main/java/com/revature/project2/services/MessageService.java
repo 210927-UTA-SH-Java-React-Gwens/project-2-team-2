@@ -9,15 +9,18 @@ import org.springframework.stereotype.Service;
 import com.revature.project2.models.Message;
 import com.revature.project2.models.User;
 import com.revature.project2.repository.MessageRepo;
+import com.revature.project2.repository.UserRepo;
 
 @Service
 public class MessageService {
 	
-private MessageRepo mDao;
+	private MessageRepo mDao;
+	private UserRepo uDao;
 	
 	@Autowired
-	public MessageService(MessageRepo m) {
+	public MessageService(MessageRepo m, UserRepo u) {
 		this.mDao = m;
+		this.uDao = u;
 	}
 	
 	public Message createMessage (Message u) {
@@ -35,6 +38,11 @@ private MessageRepo mDao;
 	}
 	
 	public List<User> getAllRecievers(int userId){
-		return mDao.findDistinctRecieverBySender(userId);
+		List<Message> msgs = mDao.findBySender(uDao.findById(userId));
+		List<User> users = new ArrayList<User>();
+		for (Message msg : msgs)
+			if (!users.contains(msg.getReceiver()))
+				users.add(msg.getReceiver());
+		return users;
 	}
 }
