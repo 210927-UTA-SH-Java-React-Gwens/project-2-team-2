@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,11 +47,10 @@ public class ListingController {
 	public ResponseEntity<List<Listing>> getRecentListings() {
 		List<Listing> recent = lServ.getRecentListings();
 		return new ResponseEntity<List<Listing>>(recent,
-				recent == null
-					? HttpStatus.INTERNAL_SERVER_ERROR
-					: recent.size() == 0
-						? HttpStatus.NO_CONTENT
-						: HttpStatus.OK);
+			recent == null ?     HttpStatus.INTERNAL_SERVER_ERROR :
+			recent.size() == 0 ? HttpStatus.NO_CONTENT :
+			                     HttpStatus.OK
+		);
 	}
 	
 	@GetMapping(value="/search")
@@ -105,5 +107,16 @@ public class ListingController {
 		}
 		
 		return lServ.createListing(listing);
+	}
+	
+	@PutMapping("/buy")
+	public ResponseEntity<Integer> purchaseListing(@RequestBody Map<String, ?> body) {
+		int status = lServ.purchaseListing((String)body.get("user"), (int)body.get("listing"));
+		return new ResponseEntity<Integer>((Integer)body.get("listing"),
+				status == -2 ? HttpStatus.GONE :              // Listing was already purchased (i.e. it's gone)
+				status == -1 ? HttpStatus.BAD_REQUEST :       // Information missing
+				status ==  0 ? HttpStatus.FAILED_DEPENDENCY : // Action cannot be completed as user does not have sufficient funds
+							   HttpStatus.OK                  // Purchase successfully documented
+				);
 	}
 }

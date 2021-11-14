@@ -124,5 +124,31 @@ public class ListingService {
 			ret.add(l);
 		return ret;
 	}
+	
+	/**
+	 * Mark a listing as purchased by a user and deduct the amount from their funds
+	 * @param user User that is buying the item
+	 * @param listingId ID of the listing that is being bought
+	 * @return -2: Listing has already been bought
+	 *         -1: Either user or listing does not exist
+	 *          0: User has insufficient funds
+	 *          1: Success
+	 */
+	public int purchaseListing(String user, int listingId) {
+		User u = uDao.findByUsername(user);
+		Listing l = lDao.findById(listingId);
+		if (u == null || l == null)
+			return -1;
+		else if (l.getPurchaser() != null)
+			return -2;
+		else if (u.getFunds() < l.getPrice())
+			return 0;
+		u.setFunds(u.getFunds() - l.getPrice());
+		l.setPurchaser(u);
+		u.addPurchase(l);
+		uDao.save(u);
+		lDao.save(l);
+		return 1;
+	}
 
 }
