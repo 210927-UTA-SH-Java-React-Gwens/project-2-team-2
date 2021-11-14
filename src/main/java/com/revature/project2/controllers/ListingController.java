@@ -29,7 +29,7 @@ import com.revature.project2.models.ListingImage;
 import com.revature.project2.services.ListingService;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/listing")
 public class ListingController {
 
