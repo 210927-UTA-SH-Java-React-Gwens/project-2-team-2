@@ -36,9 +36,7 @@ private ListingRepo lDao;
 	}
 	
 	public List<Listing> getListingsBySearchQuery(String query) {
-		List<Listing> fullSearch = new ArrayList<Listing>(lDao.findByTitleContaining(query));
-		fullSearch.addAll(lDao.findByContentContaining(query));
-		return fullSearch;
+		return lDao.findByTitleContainingOrContentContaining(query, query);
 	}
 	
 }

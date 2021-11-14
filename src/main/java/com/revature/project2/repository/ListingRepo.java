@@ -13,7 +13,7 @@ public interface ListingRepo extends JpaRepository <Listing, Integer> {
 	
 	public List<Listing> findByCategory(String category);
 	
-	public List<Listing> findByTitleContaining(String snipit);
+	public List<Listing> findByTitleContainingOrContentContaining(String snipit, String snipit2);
 	
 	public List<Listing> findByContentContaining(String snipit);
 

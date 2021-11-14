@@ -105,12 +105,9 @@ public class ListingController {
 		
 		ListingImage limg;
 		for (int i = 0; i < images.size(); i++) {
-			try {
-				limg = new ListingImage(listing, i, images.get(i));
+			limg = new ListingImage(listing, i, images.get(i));
+			if (limg.getImg().length != 0)
 				listing.addImage(limg);
-			} catch (IOException e) {
-				return new Listing();
-			}
 		}
 		
 		return lServ.createListing(listing);
