@@ -3,6 +3,7 @@ package com.revature.project2.models;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -52,9 +53,8 @@ public class Listing {
 	@JoinColumn(name = "purchaser_id")
 	private User purchaser = null;
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "watch_junction", joinColumns = { @JoinColumn(name = "listing_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "watcher_id") })
+	@ManyToMany(mappedBy="bookmarks")
+	@JsonIgnore
 	private List<User> watchers = new ArrayList<User>();
 
 	@OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
@@ -187,9 +187,15 @@ public class Listing {
 
 	@Override
 	public String toString() {
-		return "Listing [id=" + id + ", price=" + price + ", poster=" + poster + ", title=" + title
-				+ ", content=" + content + ", posted=" + posted + ", purchaser=" + purchaser + ", watchers=" + watchers
-				+ ", images=" + images + ", category=" + category + "]";
+		return "Listing [id=" + id + ", price=" + price + ", poster=" + poster.getUsername() + ", title=" + title
+				+ ", content=" + content + ", posted=" + posted
+				+ ", purchaser=" + ((purchaser != null)
+					? purchaser.getUsername()
+					: "none") + ", watchers=" + watchers
+				+ ", images=" + images.stream()
+					.map(e -> String.valueOf(e.getId()))
+					.collect(Collectors.joining(", "))
+				+ ", category=" + category + "]";
 	}
 
 	

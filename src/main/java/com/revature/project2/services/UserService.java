@@ -3,10 +3,16 @@ package com.revature.project2.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.revature.project2.models.Listing;
 import com.revature.project2.models.User;
+import com.revature.project2.repository.ListingRepo;
 import com.revature.project2.repository.UserRepo;
 import com.revature.project2.util.EmailManager;
 import com.revature.project2.util.VerificationCodeManager;
@@ -14,11 +20,16 @@ import com.revature.project2.util.VerificationCodeManager;
 @Service
 public class UserService {
 
+	@PersistenceContext
+	private EntityManager entityManager;
+	
 	private UserRepo uDao;
+	private ListingRepo lDao;
 	
 	@Autowired
-	public UserService(UserRepo u) {
+	public UserService(UserRepo u, ListingRepo l) {
 		this.uDao = u;
+		this.lDao = l;
 	}
 	
 	public User createUser (User u) {
@@ -156,6 +167,49 @@ public class UserService {
 		
 		return userDB;
 		
+	}
+	
+	public List<Listing> getBookmarks(String uname) {
+		User u = uDao.findByUsername(uname);
+		if (u == null)
+			return null;
+		return uDao.findBookmarks(u);
+	}
+	
+	/**
+	 * Add a bookmark to a user's account
+	 * @param username Username of user to add bookmark for
+	 * @param listingId ID of the listing to bookmark
+	 * @return -1 for bad request, 0 for bookmark already exists, 1 for success
+	 */
+	public int addBookmark(String username, int listingId) {
+		User u = uDao.findByUsername(username);
+		Listing l = lDao.findById(listingId);
+		if (u == null || l == null)
+			return -1;
+		if (u.addBookmark(l)) {
+			uDao.save(u);
+			return 1;
+		}
+		return 0;
+	}
+
+	/**
+	 * Remove a bookmark from a user's account
+	 * @param user User to remove bookmark for
+	 * @param listingId ID of listing to un-unwatch
+	 * @return -1 for bad request, 0 for bookmark does not exist, 1 for bookmark removed
+	 */
+	public int removeBookmark(String user, int listingId) {
+		User u = uDao.findByUsername(user);
+		Listing l = lDao.findById(listingId);
+		if (u == null || l == null)
+			return -1;
+		if (u.removeBookmark(l)) {
+			uDao.save(u);
+			return 1;
+		}
+		return 0;
 	}
 	
 	
