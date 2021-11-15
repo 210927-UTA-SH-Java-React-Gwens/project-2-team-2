@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Type;
+
 @Entity
 @Table(name = "messages")
 public class Message {
@@ -23,8 +25,8 @@ public class Message {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-	@Temporal(TemporalType.DATE)
 	@Column(name = "time_sent", nullable = false)
+	@Type(type="timestamp")
 	private Date time = new Date();
 
 	@Column(name = "content", nullable = false)
