@@ -49,7 +49,7 @@ public class UserService {
 			uDao.save(u);
 			return u;
 		} catch(Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			return null;
 		}
 	}
@@ -148,7 +148,7 @@ public class UserService {
 		User userDB = null;
 		try {
 			userDB = uDao.findByUsername(username);
-			System.out.print("arrived"+userDB.toString());
+			//System.out.print("arrived"+userDB.toString());
 			if(!userDB.getEmail().contains("-"))
 				throw new Exception("User account is already active");
 			else 
