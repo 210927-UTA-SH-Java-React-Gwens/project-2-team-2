@@ -151,4 +151,23 @@ public class ListingService {
 		return 1;
 	}
 
+	/**
+	 * Remove a user's listing
+	 * @param user User who owns the listing to be deleted
+	 * @param listingId ID of the listing to delete
+	 * @return -1: User or listing is null
+	 *          0: User does not own listing
+	 *          1: Listing successfully deleted
+	 */
+	public int deleteListing(String user, int listingId) {
+		User u = uDao.findByUsername(user);
+		Listing l = lDao.findById(listingId);
+		if (u == null || l == null)
+			return -1;
+		else if (l.getPoster().getId() != u.getId())
+			return 0;
+		lDao.delete(l);
+		return 1;
+	}
+
 }

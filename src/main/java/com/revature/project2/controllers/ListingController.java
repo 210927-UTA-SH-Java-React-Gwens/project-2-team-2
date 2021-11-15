@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +44,8 @@ public class ListingController {
 		this.lServ = l;
 	}
 	
+	
+	
 	@GetMapping("/recent")
 	public ResponseEntity<List<Listing>> getRecentListings() {
 		List<Listing> recent = lServ.getRecentListings();
@@ -52,6 +55,8 @@ public class ListingController {
 			                     HttpStatus.OK
 		);
 	}
+	
+	
 	
 	@GetMapping(value="/search")
 	public ResponseEntity<List<Listing>> getListingsByPoster(
@@ -64,6 +69,20 @@ public class ListingController {
 			return new ResponseEntity<List<Listing>>(new ArrayList<Listing>(), HttpStatus.BAD_REQUEST);
 		return new ResponseEntity<List<Listing>>(listings, listings.size() == 0 ? HttpStatus.NO_CONTENT : HttpStatus.OK);
 	}
+	
+	
+	
+	@DeleteMapping(value="delete")
+	public ResponseEntity<Integer> deleteListing(@RequestBody Map<String, ?> body) {
+		int status = lServ.deleteListing((String)body.get("user"), (int)body.get("listing"));
+		return new ResponseEntity<Integer>((Integer)body.get("listing"),
+			status == -1 ? HttpStatus.BAD_REQUEST : // User or listing does not exist
+			status ==  0 ? HttpStatus.FORBIDDEN :   // A user can only delete their own listings
+			               HttpStatus.OK
+		);
+	}
+	
+	
 
 	/**
 	 * 
@@ -108,6 +127,8 @@ public class ListingController {
 		
 		return lServ.createListing(listing);
 	}
+	
+	
 	
 	@PutMapping("/buy")
 	public ResponseEntity<Integer> purchaseListing(@RequestBody Map<String, ?> body) {
