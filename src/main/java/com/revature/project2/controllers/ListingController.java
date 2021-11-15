@@ -74,7 +74,7 @@ public class ListingController {
 	
 	@DeleteMapping(value="delete")
 	public ResponseEntity<Integer> deleteListing(@RequestBody Map<String, ?> body) {
-		int status = lServ.deleteListing((String)body.get("user"), (int)body.get("listing"));
+		int status = lServ.deleteListing((String)body.get("user"), (Integer)body.get("listing"));
 		return new ResponseEntity<Integer>((Integer)body.get("listing"),
 			status == -1 ? HttpStatus.BAD_REQUEST : // User or listing does not exist
 			status ==  0 ? HttpStatus.FORBIDDEN :   // A user can only delete their own listings
@@ -132,7 +132,7 @@ public class ListingController {
 	
 	@PutMapping("/buy")
 	public ResponseEntity<Integer> purchaseListing(@RequestBody Map<String, ?> body) {
-		int status = lServ.purchaseListing((String)body.get("user"), (int)body.get("listing"));
+		int status = lServ.purchaseListing((String)body.get("user"), (Integer)body.get("listing"));
 		return new ResponseEntity<Integer>((Integer)body.get("listing"),
 				status == -2 ? HttpStatus.GONE :              // Listing was already purchased (i.e. it's gone)
 				status == -1 ? HttpStatus.BAD_REQUEST :       // Information missing

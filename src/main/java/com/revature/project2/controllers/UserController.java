@@ -96,7 +96,7 @@ public class UserController {
 	
 	@PostMapping("/watch")
 	public ResponseEntity<Integer> addBookmark(@RequestBody Map<String, ?> body) {
-		int status = uServ.addBookmark((String)body.get("user"), (int)body.get("listing"));
+		int status = uServ.addBookmark((String)body.get("user"), (Integer)body.get("listing"));
 		return new ResponseEntity<Integer>((Integer)body.get("listing"),
 			status == -1 ? HttpStatus.BAD_REQUEST :
 				status == 0 ? HttpStatus.CONFLICT :
@@ -106,7 +106,6 @@ public class UserController {
 	
 	@GetMapping("/{uname}/watching")
 	public ResponseEntity<List<Listing>> getUserBookmarks(@PathVariable("uname") String user) {
-		System.out.println(user + " watch");
 		List<Listing> bookmarks = uServ.getBookmarks(user);
 		if (bookmarks == null)
 			return new ResponseEntity<List<Listing>>(bookmarks, HttpStatus.BAD_REQUEST);
@@ -117,7 +116,7 @@ public class UserController {
 	
 	@DeleteMapping("/unwatch")
 	public ResponseEntity<Integer> removeBookmark(@RequestBody Map<String, ?> body) {
-		int status = uServ.removeBookmark((String)body.get("user"), (int)body.get("listing"));
+		int status = uServ.removeBookmark((String)body.get("user"), (Integer)body.get("listing"));
 		return new ResponseEntity<Integer>((Integer)body.get("listing"),
 				status == -1 ? HttpStatus.BAD_REQUEST :
 					status == 0 ? HttpStatus.NOT_FOUND :
