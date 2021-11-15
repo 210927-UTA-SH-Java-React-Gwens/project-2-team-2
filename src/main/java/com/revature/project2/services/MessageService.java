@@ -26,19 +26,12 @@ public class MessageService {
 		this.uDao = u;
 	}
 	
-	public Message createMessage (String senderUname, String receiverUname, String content, String time) {
+	public Message createMessage (String senderUname, String receiverUname, String content, long time) {
 		User sender = uDao.findByUsername(senderUname);
 		User receiver = uDao.findByUsername(receiverUname);
 		if (sender == null || receiver == null)
 			return null;
-		
-		DateFormat formatter = new SimpleDateFormat();
-		Date date;
-		try {
-			date = formatter.parse(time);
-		} catch (Exception e) {
-			return null;
-		}
+		Date date = new Date(time);
 		
 		Message message = new Message(date, content, sender, receiver);
 		try {

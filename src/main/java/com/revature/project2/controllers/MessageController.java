@@ -41,7 +41,7 @@ public class MessageController {
 	}
 
 	@PostMapping("/create")
-	public ResponseEntity<Message> createMessage(@RequestBody Map<String, String> body) {
+	public ResponseEntity<Message> createMessage(@RequestBody Map<String, ?> body) {
 		Message message = null;
 		if (!body.containsKey("sender") 
 				|| !body.containsKey("receiver")
@@ -50,10 +50,10 @@ public class MessageController {
 			return new ResponseEntity<Message>(message, HttpStatus.BAD_REQUEST);
 		
 		message = mServ.createMessage(
-				body.get("sender"),
-				body.get("receiver"),
-				body.get("content"),
-				body.get("time")
+				(String)body.get("sender"),
+				(String)body.get("receiver"),
+				(String)body.get("content"),
+				((Long)body.get("time")).longValue()
 		);
 		return new ResponseEntity<Message>(message, message == null ? HttpStatus.BAD_REQUEST : HttpStatus.CREATED);
 	}
