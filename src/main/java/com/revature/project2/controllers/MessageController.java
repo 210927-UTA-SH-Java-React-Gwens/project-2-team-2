@@ -1,8 +1,11 @@
 package com.revature.project2.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,31 +20,42 @@ import com.revature.project2.services.MessageService;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping(value="/message")
+@RequestMapping(value = "/message")
 public class MessageController {
-	
+
 	private MessageService mServ;
 
 	@Autowired
 	public MessageController(MessageService m) {
 		this.mServ = m;
 	}
-	
+
 	@GetMapping("/messages")
-	public List<Message> getListingMessages(@RequestParam int sender_id, @RequestParam int reciever_id){
+	public List<Message> getListingMessages(@RequestParam int sender_id, @RequestParam int reciever_id) {
 		return mServ.getConversation(sender_id, reciever_id);
 	}
-	
+
 	@GetMapping("/recievers")
-	public List<User> getRecipients(@RequestParam("id") int user_id){
+	public List<User> getRecipients(@RequestParam("id") int user_id) {
 		return mServ.getAllRecievers(user_id);
 	}
-	
+
 	@PostMapping("/create")
-	public Message createMessage(@RequestBody Message u) {
-		System.out.println(u);
-		return mServ.createMessage(u);
+	public ResponseEntity<Message> createMessage(@RequestBody Map<String, String> body) {
+		Message message = null;
+		if (!body.containsKey("sender") 
+				|| !body.containsKey("receiver")
+				|| !body.containsKey("content") 
+				|| !body.containsKey("time"))
+			return new ResponseEntity<Message>(message, HttpStatus.BAD_REQUEST);
+		
+		message = mServ.createMessage(
+				body.get("sender"),
+				body.get("receiver"),
+				body.get("content"),
+				body.get("time")
+		);
+		return new ResponseEntity<Message>(message, message == null ? HttpStatus.BAD_REQUEST : HttpStatus.CREATED);
 	}
-	
-	
+
 }

@@ -1,6 +1,9 @@
 package com.revature.project2.services;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +26,24 @@ public class MessageService {
 		this.uDao = u;
 	}
 	
-	public Message createMessage (Message u) {
+	public Message createMessage (String senderUname, String receiverUname, String content, String time) {
+		User sender = uDao.findByUsername(senderUname);
+		User receiver = uDao.findByUsername(receiverUname);
+		if (sender == null || receiver == null)
+			return null;
+		
+		DateFormat formatter = new SimpleDateFormat();
+		Date date;
 		try {
-			mDao.save(u);
-			return u;
+			date = formatter.parse(time);
+		} catch (Exception e) {
+			return null;
+		}
+		
+		Message message = new Message(date, content, sender, receiver);
+		try {
+			mDao.save(message);
+			return message;
 		} catch(Exception e) {
 			e.printStackTrace();
 			return null;
