@@ -33,7 +33,7 @@ Online marketplace platform where users can buy and sell their items. Features a
 ## Getting Started
 ### Backend
 1. Implement Database instance and provide connection parameters in project configuration
-2. Host Java application in a host enviroment or build and deploy to an AWS S3
+2. Host Java application on a localhost enviroment or build and deploy to an AWS S3
 
 ## Contributors
 - [Gonzalo Navarrete](https://github.com/Virut1316)
